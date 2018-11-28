@@ -124,7 +124,7 @@ bool ImprovedBloomierFilter::isDependent(std::vector<std::vector<int>>& M, std::
     M[row][j] = (M[row][j] * inverse) % mP;
   }
   v[row] = (v[row] * inverse) % mP;
-
+  std::cout << startIndex << std::endl;
   // Propagate leading 1 in row upwards
   for (int i = row - 1; i >= 0; --i) {
     if (M[i][startIndex] != 0) {
@@ -183,6 +183,7 @@ void ImprovedBloomierFilter::genTable(const std::unordered_map<int, int>& keyVal
   // Loop through key value pairs, filling M table
   auto kv_it = keyValueMap.begin();
   for (int i = 0; i < mN; ++i) {
+    std::cout << "making row " << i << std::endl;
     int target = (kv_it->second - mH0(kv_it->first)) % mP;
     if (target < 0) {
       target += mP;

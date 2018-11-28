@@ -28,5 +28,7 @@ with open('dataset.txt', 'w') as f:
     for item in data:
         f.write("%s\n" % item)
 
+os.system("make clean")
 os.system("make all")
-os.system("./improved.o [n] [e] [m] [s] [k] < dataset.txt")
+os.system("chmod u+x test_improved.o")
+os.system("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k))
