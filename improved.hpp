@@ -11,28 +11,15 @@
 #include <ctime>
 
 #include "prime_util.hpp"
-
-
-class HashFunctor {
-public:
-	HashFunctor();
-  HashFunctor(int range, int prime);
-	HashFunctor(int a, int b, int range, int prime);
-  int operator()(int x) const;
-
-private:
-	int mA;
-	int mB;
-	int mRange;
-	int mPrime;
-};
-
+#include "hash_util.hpp"
 
 
 class ImprovedBloomierFilter {
 public:
-  ImprovedBloomierFilter(const std::unordered_map<int, int>& keyValueMap, float epsilon, int M, int s, int K);
+  ImprovedBloomierFilter(const std::unordered_map<int, int>& keyValueMap, float epsilon, int M, int s, int K, bool oneSided=true);
   int get(int x);
+
+	int getNumHashBlocks() const;
 
 private:
   int mN;

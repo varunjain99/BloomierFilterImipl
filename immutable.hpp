@@ -7,6 +7,8 @@
 #include <iostream>
 #include <ctime>
 
+#include "hash_util.hpp"
+
 #define PRIME 105943
 
 
@@ -17,22 +19,6 @@ struct Edge {
 	int target; // target bucket
 	int f_val; // Value of f(s)
 	int h3_val; //value of h_3(s)
-};
-
-class HashFunctor {
-public:
-	HashFunctor() {}
-	HashFunctor(int a, int b, int range, int prime) :
-						mA(a), mB(b), mRange(range), mPrime(prime) {}
-
-	int operator()(int x) const {
-		return ((mA * x + mB) % mPrime) % mRange;
-	}
-private:
-	int mA;
-	int mB;
-	int mRange;
-	int mPrime;
 };
 
 

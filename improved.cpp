@@ -1,22 +1,5 @@
 #include "improved.hpp"
 
-HashFunctor::HashFunctor() {}
-HashFunctor::HashFunctor(int range, int prime) : mRange(range), mPrime(prime) {
-  mA = rand() % mPrime;
-  mB = rand() % mPrime;
-}
-
-HashFunctor::HashFunctor(int a, int b, int range, int prime) :
-					mA(a), mB(b), mRange(range), mPrime(prime) {}
-
-int HashFunctor::operator()(int x) const {
-	return ((mA * x + mB) % mPrime) % mRange;
-}
-
-
-
-
-
 
 int ImprovedBloomierFilter::get(int x) {
   int i = 0;
@@ -34,21 +17,27 @@ int ImprovedBloomierFilter::get(int x) {
   return val;
 }
 
+int ImprovedBloomierFilter::getNumHashBlocks() const {
+  return mHashBlocks.size();
+}
 
 
 ImprovedBloomierFilter::ImprovedBloomierFilter(const std::unordered_map<int, int>& keyValueMap,
-                                               float epsilon, int M, int s, int K) {
-  bool oneSided;
-  do  {
-    oneSided = true;
-    generateTwoSidedFilter(keyValueMap, epsilon, M, s, K);
-    for (auto it = keyValueMap.begin(); it != keyValueMap.end(); ++it) {
-      if (get(it->first) != it->second) {
-        oneSided = false;
-        break;
+                                               float epsilon, int M, int s, int K, bool oneSided) {
+  if (oneSided) {
+    do  {
+      oneSided = true;
+      generateTwoSidedFilter(keyValueMap, epsilon, M, s, K);
+      for (auto it = keyValueMap.begin(); it != keyValueMap.end(); ++it) {
+        if (get(it->first) != it->second) {
+          oneSided = false;
+          break;
+        }
       }
-    }
-  } while(!oneSided);
+    } while(!oneSided);
+  } else {
+    generateTwoSidedFilter(keyValueMap, epsilon, M, s, K);
+  }
 }
 
 
@@ -278,12 +267,10 @@ void ImprovedBloomierFilter::computeP() {
     }
     g_val = (g_val * g) % mQ;
   }
-
-
   // Find prime p
   do {
     mP = rand() % (1 << mM) + (1 << mM);
-  } while (!isPrime(mP, 20) || generators.find(mP % mQ) != generators.end());
+  } while (!isPrime(mP, 20) || generators.find(mP % mQ) == generators.end());
 }
 
 void ImprovedBloomierFilter::computePInverses() {
