@@ -11,7 +11,7 @@ with open('exp345.txt','r') as f:
 	lines = f.readlines()
 
 params = np.zeros((5,len(lines)))
-results = np.zeros((6,len(lines)))
+results = np.zeros((7,len(lines)))
 
 i = 0
 
@@ -38,18 +38,19 @@ for line in lines:
 	results[3][i] = float(splitoutput[4].split('\\')[0])
 	results[4][i] = float(splitoutput[5].split('\\')[0])
 	results[5][i] = float(splitoutput[6].split('\\')[0])
+	results[6][i] = float(splitoutput[7].split('\\')[0])
 
 	i+=1
 
 param_vari = np.argmax(abs(params[:,0]-params[:,1]))
 
 paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
-resultnames = ['One-sided Processing Time','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
+resultnames = ['One-sided Processing Time','Number of Tries','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
 
-for j in range(6):
+for j in range(7):
 	plt.figure()
 	plt.plot(params[param_vari],results[j])
 	plt.xlabel(paramnames[param_vari])
 	plt.ylabel(resultnames[j])
-	plt.savefig('345_%s_%s.png'%(resultnames[j],paramnames[param_vari]))
+	plt.savefig('imgs/345_%s_%s.png'%(resultnames[j],paramnames[param_vari]))
 
