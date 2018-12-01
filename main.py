@@ -2,6 +2,7 @@ import os
 import argparse
 import math
 import random
+import subprocess
 
 parser = argparse.ArgumentParser(description='main_runner')
 parser.add_argument('--dataset_size','-n',type=int,default=1000,help='Number of elements in S, i.e. number of key-value pairs')
@@ -27,11 +28,13 @@ data = [random.randint(0,r-1) for i in range(n)]
 
 with open('dataset.txt', 'w') as f:
     for i in range(len(data)):
-    	key = keys[i]
-    	item = data[i]
+        key = keys[i]
+        item = data[i]
         f.write("%s %s\n" % (key,item) )
 
-os.system("make clean")
-os.system("make all")
-os.system("chmod u+x test_improved.o")
-os.system("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k))
+subprocess.check_call("make clean",stdout=subprocess.DEVNULL,shell=True)
+subprocess.check_call("make all",stdout=subprocess.DEVNULL,shell=True)
+subprocess.check_call("chmod u+x test_improved.o",stdout=subprocess.DEVNULL,shell=True)
+# os.system("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k))
+print(subprocess.check_output("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k),shell=True))
+
