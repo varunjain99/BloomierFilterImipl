@@ -33,5 +33,5 @@ with open('dataset.txt', 'w') as f:
         f.write("%s %s\n" % (key,item) )
 
 # os.system("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k))
-print(subprocess.check_output("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k),shell=True))
+print(subprocess.check_output("./test_improved.o %s %s %s %s %s 20 < dataset.txt"%(n,e,m,s,k),shell=True))
 
