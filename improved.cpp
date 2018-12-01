@@ -27,6 +27,9 @@ ImprovedBloomierFilter::ImprovedBloomierFilter(const std::unordered_map<int, int
   if (oneSided) {
     do  {
       oneSided = true;
+      mHashBlocks.clear();
+      mG.clear();
+      mPInverses.clear();
       generateTwoSidedFilter(keyValueMap, epsilon, M, s, K);
       for (auto it = keyValueMap.begin(); it != keyValueMap.end(); ++it) {
         if (get(it->first) != it->second) {

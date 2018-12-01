@@ -35,6 +35,9 @@ int main(int argc, char** argv) {
 	ImprovedBloomierFilter bf = ImprovedBloomierFilter(store.keyValueMap, eps, M, s, K);
 	store.one_sided_processing_time = double(clock() - startProcessTime) / (double) CLOCKS_PER_SEC;
 
+	// Test number of hash blocks that are stored
+	store.num_hash_blocks = bf.getNumHashBlocks();
+
   // Test for false positive rate
   int falsePositiveCounter = 0;
 	for (int i = N; i < N + 1000000; ++i) {
@@ -68,9 +71,6 @@ int main(int argc, char** argv) {
 		}
 	}
 	store.not_S_error_rate = (double) numWrong / 1000000;
-
-  // Test number of hash blocks that are stored
-	store.num_hash_blocks = bf.getNumHashBlocks();
 
 	std::cout << "one_sided_processing_time, " << store.one_sided_processing_time << std::endl;
 	std::cout << "false_positive_rate, " << store.false_positive_rate << std::endl;
