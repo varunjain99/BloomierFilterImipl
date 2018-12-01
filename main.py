@@ -22,11 +22,14 @@ k = math.ceil(math.log(r))
 if m < k:
 	raise ValueError('Specify m to be larger than or equal log_2(range).')
 
+keys = random.sample(range(10**9), n)
 data = [random.randint(0,r-1) for i in range(n)]
 
 with open('dataset.txt', 'w') as f:
-    for item in data:
-        f.write("%s\n" % item)
+    for i in range(len(data)):
+    	key = keys[i]
+    	item = data[i]
+        f.write("%s %s\n" % (key,item) )
 
 os.system("make clean")
 os.system("make all")
