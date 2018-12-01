@@ -47,5 +47,5 @@ for j in range(6):
 	plt.plot(params[param_vari],results[j])
 	plt.xlab(paramnames[param_vari])
 	plt.ylab(resultnames[j])
-	plt.show()
+	plt.savefig('345_%s_%s.png'%(resultnames[j],paramnames[param_vari]))
 
