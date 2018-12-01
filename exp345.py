@@ -15,6 +15,10 @@ results = np.zeros((6,len(lines)))
 
 i = 0
 
+subprocess.check_call("make clean",stdout=subprocess.DEVNULL,shell=True)
+subprocess.check_call("make all",stdout=subprocess.DEVNULL,shell=True)
+subprocess.check_call("chmod u+x test_improved.o",stdout=subprocess.DEVNULL,shell=True)
+
 for line in lines:
 	params_now = line.split(' ')
 	params[0][i] = float(params_now[0])
@@ -28,12 +32,12 @@ for line in lines:
 	output = output[2:-2]
 
 	splitoutput = output.split(' ')
-	results[0][i] = float(splitoutput[1][:-22])
-	results[1][i] = float(splitoutput[2][:-28])
-	results[2][i] = float(splitoutput[3][:-15])
-	results[3][i] = float(splitoutput[4][:-19])
-	results[4][i] = float(splitoutput[5][:-18])
-	results[5][i] = float(splitoutput[6][:-2])
+	results[0][i] = float(splitoutput[1].split('\\')[0])
+	results[1][i] = float(splitoutput[2].split('\\')[0])
+	results[2][i] = float(splitoutput[3].split('\\')[0])
+	results[3][i] = float(splitoutput[4].split('\\')[0])
+	results[4][i] = float(splitoutput[5].split('\\')[0])
+	results[5][i] = float(splitoutput[6].split('\\')[0])
 
 	i+=1
 
@@ -45,7 +49,7 @@ resultnames = ['One-sided Processing Time','False Positive Rate','Two-sided Proc
 for j in range(6):
 	plt.figure()
 	plt.plot(params[param_vari],results[j])
-	plt.xlab(paramnames[param_vari])
-	plt.ylab(resultnames[j])
+	plt.xlabel(paramnames[param_vari])
+	plt.ylabel(resultnames[j])
 	plt.savefig('345_%s_%s.png'%(resultnames[j],paramnames[param_vari]))
 

@@ -32,9 +32,6 @@ with open('dataset.txt', 'w') as f:
         item = data[i]
         f.write("%s %s\n" % (key,item) )
 
-subprocess.check_call("make clean",stdout=subprocess.DEVNULL,shell=True)
-subprocess.check_call("make all",stdout=subprocess.DEVNULL,shell=True)
-subprocess.check_call("chmod u+x test_improved.o",stdout=subprocess.DEVNULL,shell=True)
 # os.system("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k))
 print(subprocess.check_output("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k),shell=True))
 
