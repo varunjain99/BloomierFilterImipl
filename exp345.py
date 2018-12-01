@@ -39,7 +39,13 @@ for line in lines:
 
 param_vari = np.argmax(abs(params[:,0]-params[:,1]))
 
+paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
+resultnames = ['One-sided Processing Time','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
+
 for j in range(6):
 	plt.figure()
 	plt.plot(params[param_vari],results[j])
+	plt.xlab(paramnames[param_vari])
+	plt.ylab(resultnames[j])
 	plt.show()
+
