@@ -15,6 +15,7 @@ public:
   double S_error_rate;
   double not_S_error_rate;
   int num_hash_blocks;
+  int num_tries;
 };
 
 #endif

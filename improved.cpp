@@ -21,9 +21,14 @@ int ImprovedBloomierFilter::getNumHashBlocks() const {
   return mHashBlocks.size();
 }
 
+int ImprovedBloomierFilter::getNumTries() const {
+  return mNumTries;
+}
+
 
 ImprovedBloomierFilter::ImprovedBloomierFilter(const std::unordered_map<int, int>& keyValueMap,
                                                float epsilon, int M, int s, int K, bool oneSided) {
+  mNumTries = 0;
   if (oneSided) {
     do  {
       oneSided = true;
@@ -37,9 +42,11 @@ ImprovedBloomierFilter::ImprovedBloomierFilter(const std::unordered_map<int, int
           break;
         }
       }
+      mNumTries++;
     } while(!oneSided);
   } else {
     generateTwoSidedFilter(keyValueMap, epsilon, M, s, K);
+    mNumTries = 1;
   }
 }
 
@@ -127,7 +134,7 @@ bool ImprovedBloomierFilter::isDependent(std::vector<std::vector<int>>& M, std::
     M[row][j] = (M[row][j] * inverse) % mP;
   }
   v[row] = (v[row] * inverse) % mP;
-  
+
   // Propagate leading 1 in row upwards
   for (int i = row - 1; i >= 0; --i) {
     if (M[i][startIndex] != 0) {

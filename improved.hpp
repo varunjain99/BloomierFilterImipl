@@ -20,6 +20,7 @@ public:
   int get(int x);
 
 	int getNumHashBlocks() const;
+  int getNumTries() const;
 
 private:
   int mN;
@@ -33,6 +34,7 @@ private:
   std::vector<std::vector<HashFunctor>> mHashBlocks;
   std::vector<int> mG;
   std::unordered_map<int, int> mPInverses;
+  int mNumTries;
 
 
   // Sets up parameter mQ

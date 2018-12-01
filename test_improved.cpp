@@ -35,44 +35,58 @@ int main(int argc, char** argv) {
 	ImprovedBloomierFilter bf = ImprovedBloomierFilter(store.keyValueMap, eps, M, s, K);
 	store.one_sided_processing_time = double(clock() - startProcessTime) / (double) CLOCKS_PER_SEC;
 
-	// Test number of hash blocks that are stored
-	store.num_hash_blocks = bf.getNumHashBlocks();
+	// Test number of tries to get one sided error
+	store.num_tries = bf.getNumTries();
 
   // Test for false positive rate
   int falsePositiveCounter = 0;
-	for (int i = N; i < N + 1000000; ++i) {
-		int guess = bf.get(i);
-		if (guess < (1 << K) && guess >= 0) {
-			falsePositiveCounter++;
+	int i = 0;
+	while (i < 1000) {
+		int key = rand() % 16000;
+	  if (store.keyValueMap.find(key) == store.keyValueMap.end()) {
+			int val_guess = bf.get(key);
+			if (val_guess < (1 << K) && val_guess >= 0) {
+				falsePositiveCounter++;
+			}
+			i++;
 		}
 	}
-	store.false_positive_rate = (double) falsePositiveCounter / 1000000;
+	store.false_positive_rate = (double) falsePositiveCounter / 1000;
 
   // Test Two-sided processing time
 	startProcessTime = clock();
 	bf = ImprovedBloomierFilter(store.keyValueMap, eps, M, s, K, false);
 	store.two_sided_processing_time = double(clock() - startProcessTime) / (double) CLOCKS_PER_SEC;
 
+	// Test number of hash blocks that are stored
+	store.num_hash_blocks = bf.getNumHashBlocks();
+
   // Test error rate for values in S
 	int numWrong = 0;
-	for (int i = 0; i < N; ++i) {
-		if (bf.get(i) != store.keyValueMap[i]) {
+	for (auto it = store.keyValueMap.begin(); it != store.keyValueMap.end(); ++it) {
+		if (bf.get(it->first) != it->second) {
 			numWrong++;
 		}
 	}
 	store.S_error_rate = (double) numWrong / N;
 
 	//Test error rate for values not in S
-	numWrong = 0;
-	for (int i = N; i < N + 1000000; ++i) {
-		int guess = bf.get(i);
-		if (guess < (1 << K) && guess >= 0) {
-			numWrong++;
+  numWrong = 0;
+	i = 0;
+	while (i < 1000) {
+		int key = rand() % 16000;
+	  if (store.keyValueMap.find(key) == store.keyValueMap.end()) {
+			int val_guess = bf.get(key);
+			if (val_guess < (1 << K) && val_guess >= 0) {
+				numWrong++;
+			}
+			i++;
 		}
 	}
-	store.not_S_error_rate = (double) numWrong / 1000000;
+	store.not_S_error_rate = (double) numWrong / 1000;
 
 	std::cout << "one_sided_processing_time, " << store.one_sided_processing_time << std::endl;
+  std::cout << "num_tries, " << store.num_tries << std::endl;
 	std::cout << "false_positive_rate, " << store.false_positive_rate << std::endl;
 	std::cout << "two_sided_processing_time, " << store.two_sided_processing_time << std::endl;
 	std::cout << "S_error_rate, " << store.S_error_rate << std::endl;

@@ -1,11 +1,9 @@
 #include "data_store.hpp"
 
 DataStore::DataStore(int N) {
-  int i = 0;
-  int val;
-  while (i < N) {
-    std::cin >> val;
-    keyValueMap[i] = val;
-    i++;
+  int key, val;
+  for (int i = 0; i < N; ++i) {
+    std::cin >> key >> val;
+    keyValueMap[key] = val;
   }
 }
