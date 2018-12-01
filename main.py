@@ -17,7 +17,7 @@ m = args.m
 s = args.s
 r = args.range
 
-k = math.ceil(math.log(r))
+k = math.ceil(math.log(r, 2))
 
 if m < k:
 	raise ValueError('Specify m to be larger than or equal log_2(range).')
