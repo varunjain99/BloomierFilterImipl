@@ -22,7 +22,7 @@ k = math.ceil(math.log(r))
 if m < k:
 	raise ValueError('Specify m to be larger than or equal log_2(range).')
 
-keys = random.sample(range(10**9), n)
+keys = random.sample(range(n*2), n)
 data = [random.randint(0,r-1) for i in range(n)]
 
 with open('dataset.txt', 'w') as f:
