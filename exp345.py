@@ -7,6 +7,12 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 
+parser = argparse.ArgumentParser(description='main_runner')
+parser.add_argument('--num_exp','-ne',type=int,default=10,help='Number of experiments')
+
+args = parser.parse_args()
+ne = args.num_exp
+
 with open('exp345.txt','r') as f:
 	lines = f.readlines()
 
@@ -27,18 +33,19 @@ for line in lines:
 	params[3][i] = float(params_now[3])
 	params[4][i] = float(params_now[4])
 
-	output = subprocess.check_output("python main.py -n %s -e %s -m %s -s %s -r %s"%tuple(line.split(' ')),shell=True)
-	output = output.decode('utf-8')
-	output = output[2:-2]
+	for exp in range(ne):
+		output = subprocess.check_output("python main.py -n %s -e %s -m %s -s %s -r %s"%tuple(line.split(' ')),shell=True)
+		output = output.decode('utf-8')
+		output = output[2:-2]
 
-	splitoutput = output.split(' ')
-	results[0][i] = float(splitoutput[1].split('\\')[0])
-	results[1][i] = float(splitoutput[2].split('\\')[0])
-	results[2][i] = float(splitoutput[3].split('\\')[0])
-	results[3][i] = float(splitoutput[4].split('\\')[0])
-	results[4][i] = float(splitoutput[5].split('\\')[0])
-	results[5][i] = float(splitoutput[6].split('\\')[0])
-	results[6][i] = float(splitoutput[7].split('\\')[0])
+		splitoutput = output.split(' ')
+		results[0][i] += (1./ne)*float(splitoutput[1].split('\\')[0])
+		results[1][i] += (1./ne)*float(splitoutput[2].split('\\')[0])
+		results[2][i] += (1./ne)*float(splitoutput[3].split('\\')[0])
+		results[3][i] += (1./ne)*float(splitoutput[4].split('\\')[0])
+		results[4][i] += (1./ne)*float(splitoutput[5].split('\\')[0])
+		results[5][i] += (1./ne)*float(splitoutput[6].split('\\')[0])
+		results[6][i] += (1./ne)*float(splitoutput[7].split('\\')[0])
 
 	i+=1
 
