@@ -9,11 +9,17 @@ import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='main_runner')
 parser.add_argument('--num_exp','-ne',type=int,default=10,help='Number of experiments')
+parser.add_argument('--mod','-m',type=int,default=0,help='Paramter to modulate (0 for n, 1 for epsilon, 2 for m, 3 for s, 4 for range)')
+
+paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
+paramshortnames = ['n','epsilon','m','s','range']
+resultnames = ['One-sided Processing Time','Number of Tries','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
 
 args = parser.parse_args()
 ne = args.num_exp
+mod = paramshortnames[int(args.mod)]
 
-with open('exp345.txt','r') as f:
+with open('exp345/exp345_%s.txt'%mod,'r') as f:
 	lines = f.readlines()
 
 params = np.zeros((5,len(lines)))
@@ -26,6 +32,7 @@ subprocess.check_call("make all",stdout=subprocess.DEVNULL,shell=True)
 subprocess.check_call("chmod u+x test_improved.o",stdout=subprocess.DEVNULL,shell=True)
 
 for line in lines:
+	print(line)
 	params_now = line.split(' ')
 	params[0][i] = float(params_now[0])
 	params[1][i] = float(params_now[1])
@@ -49,11 +56,7 @@ for line in lines:
 
 	i+=1
 
-param_vari = np.argmax(abs(params[:,0]-params[:,1]))
-
-paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
-paramshortnames = ['n','epsilon','m','s','range']
-resultnames = ['One-sided Processing Time','Number of Tries','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
+param_vari = int(args.mod) # np.argmax(abs(params[:,0]-params[:,1]))
 
 for j in range(7):
 	plt.figure()
