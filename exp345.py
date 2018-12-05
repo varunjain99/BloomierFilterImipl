@@ -63,5 +63,5 @@ for j in range(7):
 	plt.plot(params[param_vari],results[j])
 	plt.xlabel(paramnames[param_vari])
 	plt.ylabel(resultnames[j])
-	plt.savefig('imgs/%s/345_%s_%s.png'%(paramshortnames[param_vari],resultnames[j],paramshortnames[param_vari]))
+	plt.savefig('exp345/imgs/%s/345_%s_%s.png'%(paramshortnames[param_vari],resultnames[j],paramshortnames[param_vari]))
 
