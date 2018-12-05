@@ -52,6 +52,7 @@ for line in lines:
 param_vari = np.argmax(abs(params[:,0]-params[:,1]))
 
 paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
+paramshortnames = ['n','epsilon','m','s','range']
 resultnames = ['One-sided Processing Time','Number of Tries','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
 
 for j in range(7):
@@ -59,5 +60,5 @@ for j in range(7):
 	plt.plot(params[param_vari],results[j])
 	plt.xlabel(paramnames[param_vari])
 	plt.ylabel(resultnames[j])
-	plt.savefig('imgs/345_%s_%s.png'%(resultnames[j],paramnames[param_vari]))
+	plt.savefig('imgs/%s/345_%s_%s.png'%(paramshortnames[param_vari],resultnames[j],paramshortnames[param_vari]))
 
