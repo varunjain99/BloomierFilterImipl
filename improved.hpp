@@ -16,6 +16,7 @@
 
 class ImprovedBloomierFilter {
 public:
+  ImprovedBloomierFilter();
   ImprovedBloomierFilter(const std::unordered_map<int, int>& keyValueMap, float epsilon, int M, int s, int K, bool oneSided=true);
   int get(int x);
 
@@ -62,6 +63,15 @@ private:
 
   void generateTwoSidedFilter(const std::unordered_map<int, int>& keyValueMap,
                                                  float epsilon, int M, int s, int K);
+};
+
+class BucketedBloomierFilter {
+public:
+  BucketedBloomierFilter(int buckets, const std::unordered_map<int, int>& keyValueMap, float epsilon, int M, int s, int K, bool oneSided=true);
+  int get(int x);
+private:
+  std::vector<ImprovedBloomierFilter> mBuckets;
+  HashFunctor mH;
 };
 
 

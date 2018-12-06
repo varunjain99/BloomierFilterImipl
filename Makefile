@@ -22,7 +22,10 @@ test_improved: test_improved.cpp data_store.cpp data_store.hpp libimproved.a
 test_immutable: test_immutable.cpp libimmutable.a
 	g++ $(CFLAGS) test_immutable.cpp libimmutable.a -o test_immutable.o
 
-all: libimproved.a libimmutable.a test_improved test_immutable
+test_bucketing: test_bucketing.cpp data_store.cpp data_store.hpp libimproved.a
+	g++ $(CFLAGS) test_bucketing.cpp data_store.cpp libimproved.a -o test_bucketing.o
+
+all: libimproved.a libimmutable.a test_improved test_immutable test_bucketing
 
 clean:
 	-rm -f *.o
