@@ -42,7 +42,7 @@ for line in lines:
 
 	for exp in range(ne):
 		print(exp)
-		output = subprocess.check_output("python main.py -n %s -e %s -m %s -s %s -r %s"%tuple(line.split(' ')),shell=True)
+		output = subprocess.check_output("python main345.py -n %s -e %s -m %s -s %s -r %s"%tuple(line.split(' ')),shell=True)
 		output = output.decode('utf-8')
 		output = output[2:-2]
 
