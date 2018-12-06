@@ -41,6 +41,7 @@ for line in lines:
 	params[4][i] = float(params_now[4])
 
 	for exp in range(ne):
+		print(exp)
 		output = subprocess.check_output("python main.py -n %s -e %s -m %s -s %s -r %s"%tuple(line.split(' ')),shell=True)
 		output = output.decode('utf-8')
 		output = output[2:-2]
@@ -64,4 +65,7 @@ for j in range(7):
 	plt.xlabel(paramnames[param_vari])
 	plt.ylabel(resultnames[j])
 	plt.savefig('exp345/imgs/%s/345_%s_%s.png'%(paramshortnames[param_vari],resultnames[j],paramshortnames[param_vari]))
+
+finalresults = results.transpose()
+np.savetxt('exp345/imgs/%s/345_results_%s.csv'%(paramshortnames[param_vari],paramshortnames[param_vari]), finalresults, delimiter=',')
 
