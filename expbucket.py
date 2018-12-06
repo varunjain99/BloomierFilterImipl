@@ -23,7 +23,7 @@ mod = paramshortnames[int(args.mod)]
 bucfunc = args.buckets
 base = args.base
 
-with open('exp345/exp345_%s.txt'%mod,'r') as f:
+with open('expbucket/expbucket%s_%s.txt'%(bucfunc,mod),'r') as f:
 	lines = f.readlines()
 
 params = np.zeros((5,len(lines)))
@@ -77,4 +77,3 @@ for j in range(7):
 
 finalresults = results.transpose()
 np.savetxt('expbucket/imgs/%s/bucket%s_results_%s.csv'%(paramshortnames[param_vari],bucfunc,paramshortnames[param_vari]), finalresults, delimiter=',')
-
