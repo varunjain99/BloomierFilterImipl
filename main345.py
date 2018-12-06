@@ -3,6 +3,7 @@ import argparse
 import math
 import random
 import subprocess
+import time
 
 parser = argparse.ArgumentParser(description='main_runner')
 parser.add_argument('--dataset_size','-n',type=int,default=1000,help='Number of elements in S, i.e. number of key-value pairs')
@@ -33,5 +34,8 @@ with open('dataset.txt', 'w') as f:
         item = data[i]
         f.write("%s %s\n" % (key,item) )
 
+# timenow = time.time()
+
 print(subprocess.check_output("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k),shell=True))
 
+# print(time.time()-timenow)
