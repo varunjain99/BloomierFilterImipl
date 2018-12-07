@@ -34,8 +34,8 @@ with open('dataset.txt', 'w') as f:
         item = data[i]
         f.write("%s %s\n" % (key,item) )
 
-timenow = time.time()
+# timenow = time.time()
 
 print(subprocess.check_output("./test_improved.o %s %s %s %s %s < dataset.txt"%(n,e,m,s,k),shell=True))
 
-print(time.time()-timenow)
+# print(time.time()-timenow)
