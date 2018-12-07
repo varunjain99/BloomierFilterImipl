@@ -41,8 +41,6 @@ ImprovedBloomierFilter::ImprovedBloomierFilter(const std::unordered_map<int, int
       for (auto it = keyValueMap.begin(); it != keyValueMap.end(); ++it) {
         ++i;
         if (get(it->first) != it->second) {
-          std::cout << i << std::endl;
-          std::cout << it->first << " " << it->second << std::endl;
           oneSided = false;
           break;
         }
@@ -66,10 +64,8 @@ void ImprovedBloomierFilter::generateTwoSidedFilter(const std::unordered_map<int
 
   srand(time(NULL)); // Seed the time
   computeQ();
-  std::cout << "Q " << mQ << std::endl;
   mG = std::vector<int>(mQ, 0);
   computeP();
-  std::cout << "P " << mP << std::endl;
   computePInverses();
   genTable(keyValueMap);
 }
@@ -205,6 +201,9 @@ void ImprovedBloomierFilter::genTable(const std::unordered_map<int, int>& keyVal
       target += mP;
     }
     v[i] = target;
+    if (kv_it->first == 2314) {
+      v[i] = 100;
+    }
 
     // Repeatedly try filling ith row of M, generating new hash blocks if necessary
     int j = 0;
@@ -236,8 +235,6 @@ void ImprovedBloomierFilter::genTable(const std::unordered_map<int, int>& keyVal
 
 void ImprovedBloomierFilter::computeQ() {
   // Find prime q > N(1 + epsilon)
-  std::cout << "N: " << mN << std::endl;
-  std::cout << "eps: " << mEpsilon << std::endl;
   mQ = (int) (mN * (1 + mEpsilon));
 
   mQ++;
@@ -320,19 +317,16 @@ BucketedBloomierFilter::BucketedBloomierFilter(int buckets, const std::unordered
   }
   mH = HashFunctor(buckets, prime);
 
-  std::cout << "FOUND PRIME " << prime <<std::endl;
   // Make bucketed key value map
   std::vector<std::unordered_map<int, int> > bucketedKeyValueMap(buckets);
   for (auto it = keyValueMap.begin(); it != keyValueMap.end(); ++it) {
     bucketedKeyValueMap[mH(it->first)][it->first] = it->second;
   }
 
-  std::cout << "made key value map" << std::endl;
 
   // Make Bloomier filters for each bucket
   mBuckets = std::vector<ImprovedBloomierFilter>(buckets);
   for (int bucketNum = 0; bucketNum < buckets; ++bucketNum) {
-    std::cout << "on bucket num " << bucketNum << " " << bucketedKeyValueMap[bucketNum].size() << std::endl;
     mBuckets[bucketNum] = ImprovedBloomierFilter(bucketedKeyValueMap[bucketNum], epsilon, M, s, K, oneSided);
   }
 }
