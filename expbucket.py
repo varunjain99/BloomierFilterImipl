@@ -9,24 +9,25 @@ import matplotlib.pyplot as plt
 
 parser = argparse.ArgumentParser(description='main_runner')
 parser.add_argument('--num_exp','-ne',type=int,default=10,help='Number of experiments')
-parser.add_argument('--mod','-m',type=int,default=0,help='Paramter to modulate (0 for n, 1 for epsilon, 2 for m, 3 for s, 4 for range)')
-parser.add_argument('--buckets','-B',type=str,default='log1',help='Function for number of buckets; log1 (for log), log2 (for log squared), log3 (for log cubed)')
-parser.add_argument('--base','-base',type=int,default=2,help='Log base to use')
+parser.add_argument('--mod','-m',type=int,default=0,help='Paramter to modulate (0 for n, 1 for epsilon, 2 for m, 3 for s, 4 for range, 5 for B)')
+# parser.add_argument('--buckets','-B',type=str,default='log1',help='Function for number of buckets; log1 (for log), log2 (for log squared), log3 (for log cubed)')
+# parser.add_argument('--base','-base',type=int,default=2,help='Log base to use')
 
-paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f']
-paramshortnames = ['n','epsilon','m','s','range']
+paramnames = ['Dataset Size','Epsilon','Number of Bits of p','Number of Hash Functions','Range of f','Number of Buckets']
+paramshortnames = ['n','epsilon','m','s','range','B']
 resultnames = ['One-sided Processing Time','Number of Tries','False Positive Rate','Two-sided Processing Time','Error Rate (in S)','Error Rate (not in S)','Number of Hash Blocks']
 
 args = parser.parse_args()
 ne = args.num_exp
 mod = paramshortnames[int(args.mod)]
-bucfunc = args.buckets
-base = args.base
+# bucfunc = args.buckets
+# base = args.base
 
-with open('expbucket/expbucket%s_%s.txt'%(bucfunc,mod),'r') as f:
+# with open('expbucket/expbucket%s_%s.txt'%(bucfunc,mod),'r') as f:
+with open('expbucket/expbucket_%s.txt'%mod,'r') as f:
 	lines = f.readlines()
 
-params = np.zeros((5,len(lines)))
+params = np.zeros((6,len(lines)))
 results = np.zeros((7,len(lines)))
 
 i = 0
@@ -43,15 +44,17 @@ for line in lines:
 	params[2][i] = float(params_now[2])
 	params[3][i] = float(params_now[3])
 	params[4][i] = float(params_now[4])
+	params[5][i] = float(params_now[5])
 
 	for exp in range(ne):
 		print(exp)
-		B = int(line.split(' ')[0])
-		if bucfunc[:-1] == 'log':
-			for _ in range(int(bucfunc[-1])):
-				B = math.log(B,base)
-			B = math.ceil(B)
-		output = subprocess.check_output("python mainbucket.py -n %s -e %s -m %s -s %s -r %s -B %s"%tuple(line.split(' ').append(str(B))),shell=True)
+		# B = int(line.split(' ')[0])
+		# if bucfunc[:-1] == 'log':
+		# 	for _ in range(int(bucfunc[-1])):
+		# 		B = math.log(B,base)
+		# 	B = math.ceil(B)
+		output = subprocess.check_output("python mainbucket.py -n %s -e %s -m %s -s %s -r %s -B %s"%tuple(line.split(' ')),shell=True)
+		# output = subprocess.check_output("python mainbucket.py -n %s -e %s -m %s -s %s -r %s -B %s"%tuple(line.split(' ').append(str(B))),shell=True)
 		output = output.decode('utf-8')
 		output = output[2:-2]
 
@@ -73,7 +76,7 @@ for j in range(7):
 	plt.plot(params[param_vari],results[j])
 	plt.xlabel(paramnames[param_vari])
 	plt.ylabel(resultnames[j])
-	plt.savefig('expbucket/imgs/%s/bucket%s_%s_%s.png'%(paramshortnames[param_vari],bucfunc,resultnames[j],paramshortnames[param_vari]))
+	plt.savefig('expbucket/imgs/%s/bucket_%s_%s.png'%(paramshortnames[param_vari],resultnames[j],paramshortnames[param_vari]))
 
 finalresults = results.transpose()
-np.savetxt('expbucket/imgs/%s/bucket%s_results_%s.csv'%(paramshortnames[param_vari],bucfunc,paramshortnames[param_vari]), finalresults, delimiter=',')
+np.savetxt('expbucket/imgs/%s/bucket_results_%s.csv'%(paramshortnames[param_vari],paramshortnames[param_vari]), finalresults, delimiter=',')
