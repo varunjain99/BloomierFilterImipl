@@ -201,9 +201,6 @@ void ImprovedBloomierFilter::genTable(const std::unordered_map<int, int>& keyVal
       target += mP;
     }
     v[i] = target;
-    if (kv_it->first == 2314) {
-      v[i] = 100;
-    }
 
     // Repeatedly try filling ith row of M, generating new hash blocks if necessary
     int j = 0;
