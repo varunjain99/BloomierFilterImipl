@@ -76,13 +76,10 @@ void BloomierFilter::generateBloomierFilter(const std::unordered_map<int, int>& 
 
 			edgeMapping[h1_val * mNumBuckets + h2_val] = true;
 			edgeMapping[h2_val * mNumBuckets + h1_val] = true;
-
 			mAdjList[h1_val].emplace_back(h2_val, kv.second, h3_val);
 			mAdjList[h2_val].emplace_back(h1_val, kv.second, h3_val);
-
 		}
 	} while(!simple || !checkSimpleIsAcyclic());
-
 	std::vector<bool> computed(mNumBuckets, 0);
 	for (int i = 0; i < mNumBuckets; ++i) {
 		if (!computed[i]) {
@@ -101,6 +98,10 @@ int BloomierFilter::get(int x) {
 	int h1_val = mHashFunctions[0](x);
 	int h2_val = mHashFunctions[1](x);
 	int h3_val = mHashFunctions[2](x);
-	return mFilter[h1_val] + mFilter[h2_val] + h3_val;
-
+	int answer = (mFilter[h1_val] + mFilter[h2_val] + h3_val) % mModulus;
+	if (answer < 0) {
+		return answer + mModulus;
+	} else {
+		return answer;
+	}
 }

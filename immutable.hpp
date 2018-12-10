@@ -14,6 +14,7 @@
 
 // Edge struct
 struct Edge {
+	Edge() {}
 	Edge(int target, int f_val, int h3_val) : target(target), f_val(f_val), h3_val(h3_val) {}
 
 	int target; // target bucket

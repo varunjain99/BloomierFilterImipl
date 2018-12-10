@@ -19,8 +19,8 @@ libimmutable.a: immutable.cpp immutable.hpp hash_util
 test_improved: test_improved.cpp data_store.cpp data_store.hpp libimproved.a
 	g++ $(CFLAGS) test_improved.cpp data_store.cpp libimproved.a -o test_improved.o
 
-test_immutable: test_immutable.cpp libimmutable.a
-	g++ $(CFLAGS) test_immutable.cpp libimmutable.a -o test_immutable.o
+test_immutable: test_immutable.cpp data_store.cpp data_store.hpp libimmutable.a
+	g++ $(CFLAGS) test_immutable.cpp data_store.cpp libimmutable.a -o test_immutable.o
 
 test_bucketing: test_bucketing.cpp data_store.cpp data_store.hpp libimproved.a
 	g++ $(CFLAGS) test_bucketing.cpp data_store.cpp libimproved.a -o test_bucketing.o
