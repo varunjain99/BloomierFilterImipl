@@ -13,7 +13,7 @@ parser.add_argument('--range','-r',type=int,default=20,help='Number of possible 
 args = parser.parse_args()
 
 n = args.dataset_size
-buckets = int(args.c * n)
+c = args.c
 maxVal = args.maxVal
 r = args.range
 
@@ -21,6 +21,9 @@ k = int(math.ceil(math.log(r, 2)))
 
 if maxVal < r:
 	raise ValueError('Specify maxVal to be larger than or equal range.')
+
+#if c < 2:
+#	raise ValueError('c must be at least 2')
 
 keys = random.sample(range(n), n)
 data = [random.randint(0,r-1) for i in range(n)]
@@ -31,5 +34,5 @@ with open('dataset.txt', 'w') as f:
         item = data[i]
         f.write("%s %s\n" % (key,item) )
 
-print(subprocess.check_output("./test_immutable.o %s %s %s %s < dataset.txt"%(n,buckets,maxVal,k),shell=True))
+print(subprocess.check_output("./test_immutable.o %s %s %s %s < dataset.txt"%(n,c,maxVal,k),shell=True))
 
